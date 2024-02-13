@@ -58,5 +58,42 @@ def index():
     print(clients)
     return render_template('index.html', clients=clients)  # Передаем список клиентов в шаблон
 
+# Маршрут для отображения клиентов
+@app.route('/clients')
+def clients():
+    clients = Clients.query.all()  # Извлекаем всех клиентов из базы данных
+    return render_template('clients.html', clients=clients)
+
+# Маршрут для отображения оборудования
+@app.route('/equipment')
+def equipment():
+    equipment = Equipment.query.all()  # Извлекаем всё оборудование из базы данных
+    return render_template('equipment.html', equipment=equipment)
+
+# Маршрут для отображения абонементов
+@app.route('/abonements')
+def abonements():
+    abonements = Abonements.query.all()  # Извлекаем все абонементы из базы данных
+    return render_template('abonements.html', abonements=abonements)
+
+# Маршрут для отображения залов
+@app.route('/halls')
+def halls():
+    halls = Halls.query.all()  # Извлекаем все залы из базы данных
+    return render_template('halls.html', halls=halls)
+
+# Маршрут для отображения тренеров
+@app.route('/trainers')
+def trainers():
+    trainers = Trainers.query.all()  # Извлекаем всех тренеров из базы данных
+    return render_template('trainers.html', trainers=trainers)
+
+# Маршрут для отображения тренировок
+@app.route('/workouts')
+def workouts():
+    workouts = Workouts.query.all()  # Извлекаем все тренировки из базы данных
+    return render_template('workouts.html', workouts=workouts)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
