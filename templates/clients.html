@@ -5,45 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список клиентов</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        li:last-child {
-            border-bottom: none;
-        }
+        /* Ваши стили здесь */
     </style>
 </head>
 <body>
 
 <div class="container">
+    <a href="/">На главную</a>
     <h1>Список клиентов</h1>
+    <!-- Форма поиска -->
+    <form action="/search" method="GET">
+        <input type="text" name="query" placeholder="Введите имя клиента">
+        <button type="submit">Поиск</button>
+    </form>
+
     <ul>
         {% for client in clients %}
             <li>{{ client.first_name }} {{ client.last_name }}</li>

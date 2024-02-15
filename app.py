@@ -94,6 +94,17 @@ def workouts():
     workouts = Workouts.query.all()  # Извлекаем все тренировки из базы данных
     return render_template('workouts.html', workouts=workouts)
 
+@app.route('/search')
+def search():
+    query = request.args.get('query')  # Получаем запрос из параметра запроса GET
+    # Выполните поиск клиентов по имени в вашей базе данных или списке клиентов
+    # Например, если у вас есть список клиентов clients, выполните фильтрацию по имени
+    clients = Clients.query.all()
+    search_results = [client for client in clients if query.lower() in client.first_name.lower() or query.lower() in client.last_name.lower()]
+    # Отобразите результаты поиска в вашем шаблоне
+    return render_template('clients.html', search_results=search_results, query=query)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
