@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список клиентов</title>
-    <style>
-        /* Ваши стили здесь */
-    </style>
+    <title>My Gym App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
 <div class="container">
-    <a href="/">На главную</a>
-    <h1>Список клиентов</h1>
-    <!-- Форма поиска -->
-    <form action="/search" method="GET">
-        <input type="text" name="query" placeholder="Введите имя клиента">
-        <button type="submit">Поиск</button>
-    </form>
+    <a href="/" class="button">На главную</a>
+    <a href="/add_client" class="button">Добавить клиента</a>
+    <a href="/clients_list" class="button">Список клиентов</a>
+    <h1> Поиск клиента:</h1>
 
-    <ul>
-        {% for client in clients %}
-            <li>{{ client.first_name }} {{ client.last_name }}</li>
-        {% endfor %}
-    </ul>
+    <!-- Форма поиска -->
+    <form class="search-form" action="/search" method="GET">
+        <input type="text" name="query" placeholder="Введите запрос">
+        <button type="submit" class="button">Поиск</button>
+    </form>
 </div>
 
 </body>

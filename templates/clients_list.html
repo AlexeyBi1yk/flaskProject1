@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список клиентов</title>
+    <style>
+        /* Здесь вы можете добавить свои стили */
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container a {
+            display: block;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: rgba(0, 0, 255, 0.5); /* Синий с прозрачностью 0.5 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Дата рождения</th>
+                <th>Пол</th>
+                <th>Тип подписки</th>
+                <th>Дата окончания подписки</th>
+                <th>Номер телефона</th>
+            </tr>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.birth_date }}</td>
+                <td>{{ client.gender }}</td>
+                <td>{{ client.sub_type }}</td>
+                <td>{{ client.sub_expiry }}</td>
+                <td>{{ client.phone_number }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
