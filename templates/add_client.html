@@ -3,33 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Client</title>
+    <title>Добавить клиента:</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Используемый шрифт */
+            background-color: #f8f9fa; /* Цвет фона */
+            margin: 0; /* Убираем отступы по умолчанию */
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center; /* Выравнивание заголовка по центру */
+            color: #000000; /* Цвет текста заголовка */
+        }
+
+        table {
+            margin: auto; /* Центрирование таблицы */
+            background-color: #fffacd; /* Цвет фона таблицы */
+            border-radius: 5px; /* Закругленные углы таблицы */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень таблицы */
+            border-collapse: collapse; /* Убираем отступы между ячейками */
+        }
+
+        th, td {
+            padding: 10px; /* Отступы в ячейках */
+            border: 1px solid #dee2e6; /* Границы ячеек */
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%; /* Ширина полей ввода и списка */
+            padding: 8px; /* Отступы в полях ввода и списках */
+            margin-top: 5px; /* Верхний отступ */
+            margin-bottom: 10px; /* Нижний отступ */
+            box-sizing: border-box; /* Учитываем padding в общей ширине */
+        }
+
+        input[type="submit"] {
+            width: auto; /* Ширина кнопки по содержимому */
+            padding: 10px 20px; /* Отступы в кнопке */
+            margin-top: 10px; /* Верхний отступ */
+            background-color: #FFD700; /* Цвет фона кнопки */
+            color: black; /* Цвет текста кнопки */
+            border: none; /* Убираем границу кнопки */
+            border-radius: 5px; /* Закругленные углы кнопки */
+            cursor: pointer; /* Курсор при наведении */
+            font-size: 16px; /* Размер шрифта */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FFD700; /* Цвет фона кнопки при наведении */
+        }
+    </style>
 </head>
 <body>
-    <h1>Add New Client</h1>
+    <h1>Добавить клиента</h1>
     <form action="/add_client" method="post">
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name"><br>
-
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name"><br>
-
-        <label for="birth_date">Birth Date:</label>
-        <input type="date" id="birth_date" name="birth_date"><br>
-
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-            <option value="Мужской">Мужской</option>
-            <option value="Женский">Женский</option>
-        </select><br>
-
-        <label for="sub_type">Subscription Type:</label>
-        <input type="text" id="sub_type" name="sub_type"><br>
-
-        <label for="sub_expiry">Subscription Expiry:</label>
-        <input type="date" id="sub_expiry" name="sub_expiry"><br>
-
-        <input type="submit" value="Add Client">
+        <table>
+            <tr>
+                <td><label for="first_name">Имя:</label></td>
+                <td><input type="text" id="first_name" name="first_name"></td>
+            </tr>
+            <tr>
+                <td><label for="last_name">Фамилия:</label></td>
+                <td><input type="text" id="last_name" name="last_name"></td>
+            </tr>
+            <tr>
+                <td><label for="birth_date">Дата рождения:</label></td>
+                <td><input type="date" id="birth_date" name="birth_date"></td>
+            </tr>
+            <tr>
+                <td><label for="gender">Пол:</label></td>
+                <td>
+                    <select id="gender" name="gender">
+                        <option value="Мужской">Мужской</option>
+                        <option value="Женский">Женский</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="sub_type">Тип абонемента:</label></td>
+                <td><input type="text" id="sub_type" name="sub_type"></td>
+            </tr>
+            <tr>
+                <td><label for="sub_expiry">Действительно до:</label></td>
+                <td><input type="date" id="sub_expiry" name="sub_expiry"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Добавить клиента"></td>
+            </tr>
+        </table>
     </form>
 </body>
 </html>

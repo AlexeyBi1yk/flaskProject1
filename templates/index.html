@@ -1,28 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Gym App</title>
     <!-- Подключаем внешний файл стилей -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
 
+    <!-- Добавляем стили для заголовка -->
+    <style>
+        /* Стили для заголовка */
+        h1 {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            color: #000; /* Цвет текста */
+            border: 2px solid #FFD700; /* Цвет рамки как у кнопок (золотой) */
+            border-radius: 25px; /* Закругленные углы */
+            padding: 10px 20px; /* Добавляем отступ внутри рамки */
+            display: inline-block; /* Делаем заголовок блочным элементом */
+            background-color: #FFD700; /* Цвет фона как у кнопок (золотой) */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Добавляем тень */
+            transition: all 0.3s ease; /* Плавное изменение стиля при наведении */
+            opacity: 0.9;
+        }
+
+        /* Стили для контейнера */
+        .container {
+            background-image: url('{{ url_for('static', filename='image.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            min-height: 120vh;
+            padding: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
 <body>
 
-<h1>Фитнес клуб "Олимп": Администратор </h1>
+<div class="container">
+    <a href="/">
+        <h1>Фитнес клуб "Олимп": Администратор</h1>
+    </a>
 
+    <ul>
+        <li><a href="#" onclick="loadPage('/clients')" class="button">Клиенты</a></li>
+        <li><a href="#" onclick="loadPage('/equipment')" class="button">Оборудование</a></li>
+        <li><a href="#" onclick="loadPage('/abonements')" class="button">Абонементы</a></li>
+        <li><a href="#" onclick="loadPage('/halls')" class="button">Залы</a></li>
+        <li><a href="#" onclick="loadPage('/trainers')" class="button">Тренеры</a></li>
+        <li><a href="#" onclick="loadPage('/workouts')" class="button">Занятия</a></li>
+    </ul>
 
-<ul>
-    <li><a href="/clients" class="button">Клиенты</a></li>
-    <li><a href="/equipment" class="button">Оборудование</a></li>
-    <li><a href="/abonements" class="button">Абонементы</a></li>
-    <li><a href="/halls" class="button">Залы</a></li>
-    <li><a href="/trainers" class="button">Тренеры</a></li>
-    <li><a href="/workouts" class="button">Занятия</a></li>
-</ul>
+    <!-- Добавляем div для вывода данных -->
+    <div id="content"></div>
+</div>
 
+<!-- Подключаем библиотеку jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Подключаем скрипт -->
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function(result) {
+                $("#content").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+</script>
 
 </body>
 </html>

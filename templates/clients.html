@@ -5,13 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Gym App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Подключаем библиотеку jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Встраиваем скрипт -->
+    <script>
+        function loadPage(url) {
+            $.ajax({
+                url: url,
+                success: function(result) {
+                    $("#content").html(result);
+                }
+            });
+            return false; // предотвращает переход по ссылке
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
-    <a href="/" class="button">На главную</a>
-    <a href="/add_client" class="button">Добавить клиента</a>
-    <a href="/clients_list" class="button">Список клиентов</a>
+    <a href="/add_client" onclick="loadPage(this.href); return false;" class="button">Добавить клиента</a>
+    <a href="/clients_list" onclick="loadPage(this.href); return false;" class="button">Список клиентов</a>
     <h1> Поиск клиента:</h1>
 
     <!-- Форма поиска -->

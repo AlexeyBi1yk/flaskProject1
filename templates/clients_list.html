@@ -3,55 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список клиентов</title>
+    <title>Добавить клиента</title>
     <style>
-        /* Здесь вы можете добавить свои стили */
-        .container {
-            text-align: center;
-            margin-top: 50px;
-        }
-        .container a {
-            display: block;
-            margin-bottom: 10px;
-        }
         table {
-            width: 100%;
-            border-collapse: collapse;
+            margin: auto; /* Центрирование таблицы */
         }
         th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+            padding: 10px;
         }
-        th {
-            background-color: rgba(0, 0, 255, 0.5); /* Синий с прозрачностью 0.5 */
+        input[type="text"], input[type="date"], select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <h1 style="text-align: center;">Добавить клиента</h1>
+    <form action="/add_client" method="post">
         <table>
             <tr>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Дата рождения</th>
-                <th>Пол</th>
-                <th>Тип подписки</th>
-                <th>Дата окончания подписки</th>
-                <th>Номер телефона</th>
+                <td><label for="first_name">Имя:</label></td>
+                <td><input type="text" id="first_name" name="first_name"></td>
             </tr>
-            {% for client in clients %}
             <tr>
-                <td>{{ client.first_name }}</td>
-                <td>{{ client.last_name }}</td>
-                <td>{{ client.birth_date }}</td>
-                <td>{{ client.gender }}</td>
-                <td>{{ client.sub_type }}</td>
-                <td>{{ client.sub_expiry }}</td>
-                <td>{{ client.phone_number }}</td>
+                <td><label for="last_name">Фамилия:</label></td>
+                <td><input type="text" id="last_name" name="last_name"></td>
             </tr>
-            {% endfor %}
+            <tr>
+                <td><label for="birth_date">Дата рождения:</label></td>
+                <td><input type="date" id="birth_date" name="birth_date"></td>
+            </tr>
+            <tr>
+                <td><label for="gender">Пол:</label></td>
+                <td>
+                    <select id="gender" name="gender">
+                        <option value="Мужской">Мужской</option>
+                        <option value="Женский">Женский</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="sub_type">Тип абонемента:</label></td>
+                <td><input type="text" id="sub_type" name="sub_type"></td>
+            </tr>
+            <tr>
+                <td><label for="sub_expiry">Действительно до:</label></td>
+                <td><input type="date" id="sub_expiry" name="sub_expiry"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Добавить клиента"></td>
+            </tr>
         </table>
-    </div>
+    </form>
 </body>
 </html>
