@@ -22,7 +22,7 @@ class Clients(db.Model):
     @classmethod
     def create(cls, first_name, last_name, birth_date, gender, sub_type, sub_expiry):
         client = cls(first_name=first_name, last_name=last_name, birth_date=birth_date, gender=gender,
-                     sub_type=sub_type, sub_expiry=sub_expiry)
+                     sub_type=sub_type, sub_expiry=sub_expiry, phone_number=phone_number)
         db.session.add(client)
         db.session.commit()
         return client
@@ -56,21 +56,22 @@ class Trainers(db.Model):
     specialization = db.Column(db.String(100))
     phone_number = db.Column(db.String(20))
 
-class Workouts(db.Model):
-    __tablename__ = 'workouts'
+class ClientWorkouts(db.Model):
+    __tablename__ = 'client_workouts'
     id = db.Column(db.Integer, primary_key=True)
-    workout_type = db.Column(db.Enum('Групповая', 'Индивидуальная'))
+    client_first_name = db.Column(db.String(50))
+    client_last_name = db.Column(db.String(50))
+    trainer_first_name = db.Column(db.String(50))
+    trainer_last_name = db.Column(db.String(50))
+    activity_type = db.Column(db.String(50))
+    activity_name = db.Column(db.String(100))
     date_time = db.Column(db.DateTime)
-    trainer_id = db.Column(db.Integer, db.ForeignKey('trainers.id'))  # Здесь была исправлена опечатка
-    trainer = db.relationship('Trainers', backref='workouts')  # Исправлено на 'Trainers'
 
 
 # Основной маршрут - главная страница
 @app.route('/')
 def index():
-    clients = Clients.query.all()  # Извлекаем всех клиентов из базы данных
-    print(clients)
-    return render_template('index.html', clients=clients)  # Передаем список клиентов в шаблон
+    return render_template('index.html')
 
 # Маршрут для отображения клиентов
 @app.route('/clients')
@@ -109,7 +110,7 @@ def trainers():
 # Маршрут для отображения тренировок
 @app.route('/workouts')
 def workouts():
-    workouts = Workouts.query.all()  # Извлекаем все тренировки из базы данных
+    workouts = ClientWorkouts.query.all()  # Извлекаем все тренировки из базы данных
     return render_template('workouts.html', workouts=workouts)
 
 @app.route('/search')
@@ -144,9 +145,10 @@ def add_client():
         gender = request.form['gender']
         sub_type = request.form['sub_type']
         sub_expiry = datetime.strptime(request.form['sub_expiry'], '%Y-%m-%d')
-
+        phone_number = request.form['phone_number']  # Получаем номер телефона из формы
         # Создание нового клиента
-        client = Clients(first_name=first_name, last_name=last_name, birth_date=birth_date, gender=gender, sub_type=sub_type, sub_expiry=sub_expiry)
+        client = Clients(first_name=first_name, last_name=last_name, birth_date=birth_date, gender=gender,
+                         sub_type=sub_type, sub_expiry=sub_expiry, phone_number=phone_number)  # Используем полученный номер телефона при создании клиента
         db.session.add(client)
         db.session.commit()
 
@@ -154,6 +156,30 @@ def add_client():
 
     return render_template('add_client.html')
 
+
+# Определяем маршрут для редактирования клиента
+@app.route('/edit_client/<int:id>', methods=['GET', 'POST'])
+def edit_client(id):
+    client = Clients.query.get_or_404(id)  # Получаем клиента из базы данных или возвращаем ошибку 404, если не найден
+
+    if request.method == 'POST':
+        # Обновляем данные клиента
+        client.first_name = request.form['first_name']
+        client.last_name = request.form['last_name']
+        client.birth_date = datetime.strptime(request.form['birth_date'], '%Y-%m-%d')
+        client.gender = request.form['gender']
+        client.sub_type = request.form['sub_type']
+        client.sub_expiry = datetime.strptime(request.form['sub_expiry'], '%Y-%m-%d')
+        client.phone_number = request.form['phone_number']
+
+        db.session.commit()  # Сохраняем изменения в базе данных
+
+        return redirect(url_for('index'))  # Перенаправляем на главную страницу
+
+    return render_template('edit_client.html', client=client)
+
+
+# Ваш существующий код Flask
 
 
 if __name__ == '__main__':

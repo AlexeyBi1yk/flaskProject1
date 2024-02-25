@@ -29,12 +29,38 @@
 
         /* Стили для контейнера */
         .container {
-            background-image: url('{{ url_for('static', filename='image.jpg') }}');
-            background-size: cover;
-            background-position: center;
+            background-color: rgba(255, 160, 1, 0.5); /* Цвет фона контейнера с небольшой прозрачностью */
             min-height: 120vh;
             padding: 20px;
             opacity: 0.8;
+        }
+
+        /* Дополнительные стили для ссылок */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFD700;
+            color: #000;
+            text-decoration: none;
+            border-radius: 15px;
+            border: 5px solid #FFD700;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #FFC107;
         }
     </style>
 </head>
@@ -42,7 +68,7 @@
 
 <div class="container">
     <a href="/">
-        <h1>Фитнес клуб "Олимп": Администратор</h1>
+        <h1>Администратор</h1>
     </a>
 
     <ul>
@@ -54,8 +80,9 @@
         <li><a href="#" onclick="loadPage('/workouts')" class="button">Занятия</a></li>
     </ul>
 
-    <!-- Добавляем div для вывода данных -->
+    <!-- Добавленный элемент #content -->
     <div id="content"></div>
+
 </div>
 
 <!-- Подключаем библиотеку jQuery -->

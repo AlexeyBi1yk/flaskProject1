@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Gym App</title>
+    <!-- Подключаем внешний файл стилей -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
     <!-- Подключаем библиотеку jQuery -->
@@ -21,19 +22,65 @@
             return false; // предотвращает переход по ссылке
         }
     </script>
+
+    <style>
+        /* Общий стиль текста */
+        body {
+            font-family: Arial, sans-serif; /* Шрифт */
+            color: #333; /* Цвет текста */
+        }
+
+        /* Стили для объединенного поля поиска */
+        .container {
+            text-align: center; /* Выравниваем содержимое по центру */
+            margin-bottom: 20px; /* Добавляем небольшой отступ снизу */
+        }
+
+        .search-field {
+            display: inline-block; /* Делаем поле поиска блочным элементом */
+            margin-bottom: 10px; /* Добавляем отступ между полем поиска и кнопками */
+            background-color: #FFF; /* Белый цвет фона */
+            padding: 5px 10px; /* Отступы */
+            border-radius: 5px; /* Закругленные углы */
+            margin-right: 5px; /* Отступ между заголовком и полем ввода */
+        }
+
+        .search-field input[type="text"] {
+            background-color: transparent; /* Прозрачное фоновое поле ввода */
+            border: none; /* Убираем границу */
+            font-size: inherit; /* Используем размер шрифта родительского элемента */
+            color: #333; /* Цвет текста */
+            width: 200px; /* Ширина поля ввода */
+        }
+
+        .button {
+            background-color: #FFD700; /* Желтый цвет фона */
+            color: black; /* Цвет текста */
+            border: none; /* Убираем границу */
+            padding: 8px 20px; /* Отступы */
+            border-radius: 5px; /* Закругленные углы */
+            text-decoration: none; /* Убираем подчеркивание */
+            margin-right: 5px; /* Отступ между кнопками */
+        }
+
+        .button:hover {
+            background-color: #FDD835; /* Изменяем цвет фона при наведении */
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="/add_client" onclick="loadPage(this.href); return false;" class="button">Добавить клиента</a>
-    <a href="/clients_list" onclick="loadPage(this.href); return false;" class="button">Список клиентов</a>
-    <h1> Поиск клиента:</h1>
-
-    <!-- Форма поиска -->
-    <form class="search-form" action="/search" method="GET">
-        <input type="text" name="query" placeholder="Введите запрос">
+    <!-- Заголовок "Поиск клиента:" и поле поиска объединены -->
+    <form class="search-field" action="/search" method="GET">
+        <input type="text" name="query" placeholder="Поиск клиента">
+        <!-- Небольшой отступ между полем ввода и кнопкой поиска -->
         <button type="submit" class="button">Поиск</button>
     </form>
+
+    <!-- Кнопки "Список клиентов" и "Добавить клиента" остаются горизонтально -->
+    <a href="/add_client" onclick="loadPage(this.href); return false;" class="button">Добавить клиента</a>
+    <a href="/clients_list" onclick="loadPage(this.href); return false;" class="button">Список клиентов</a>
 </div>
 
 </body>

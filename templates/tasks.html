@@ -1,0 +1,76 @@
+<!-- tasks.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <!-- Подключаем внешний файл стилей -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Список задач</h1>
+
+<!-- Добавляем div для вывода данных -->
+<div id="content">
+    <!-- Выводим таблицу для задач -->
+    <table>
+        <tr>
+            <th>Название задачи</th>
+            <th>Описание</th>
+            <th>Важность</th>
+            <th>Статус</th>
+            <th>Срок выполнения</th>
+            <th>Действия</th> <!-- Новый заголовок для кнопки -->
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.task_name }}</td>
+            <td>{{ task.description }}</td>
+            <td style="color: {{ 'red' if task.importance == 'high' else 'black' }}">{{ task.importance }}</td>
+            <td>
+                <input type="checkbox" id="status_{{ task.id }}" onclick="toggleCompleted('{{ task.id }}')" {% if task.status == 'Выполнено' %} checked {% endif %} >
+            </td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                <button onclick="deleteTask('{{ task.id }}')">Удалить</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- Подключаем библиотеку jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Подключаем скрипт -->
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function(result) {
+                $("#content").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+
+    // Функция для удаления задачи
+    function deleteTask(taskId) {
+        $.ajax({
+            url: '/tasks/' + taskId,
+            type: 'DELETE',
+            success: function(result) {
+                if (result.success) {
+                    loadPage('/tasks'); // Загружаем страницу задач снова после удаления
+                } else {
+                    alert("Ошибка при удалении задачи");
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
