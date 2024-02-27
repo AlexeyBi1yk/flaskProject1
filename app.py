@@ -71,7 +71,9 @@ class ClientWorkouts(db.Model):
 # Основной маршрут - главная страница
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Получаем количество клиентов из базы данных
+    clients_count = Clients.query.count()
+    return render_template('index.html', clients_count=clients_count)
 
 # Маршрут для отображения клиентов
 @app.route('/clients')

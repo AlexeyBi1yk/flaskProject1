@@ -4,30 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Gym App</title>
-    <!-- Подключаем внешний файл стилей -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-    <!-- Подключаем библиотеку jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Встраиваем скрипт -->
-    <script>
-        function loadPage(url) {
-            $.ajax({
-                url: url,
-                success: function(result) {
-                    $("#content").html(result);
-                }
-            });
-            return false; // предотвращает переход по ссылке
-        }
-    </script>
-
     <style>
         /* Общий стиль текста */
         body {
-            font-family: Arial, sans-serif; /* Шрифт */
-            color: #333; /* Цвет текста */
+            font-family: oblique; /* Шрифт */
+            color: #000000; /* Цвет текста */
         }
 
         /* Стили для объединенного поля поиска */
@@ -36,12 +17,15 @@
             margin-bottom: 20px; /* Добавляем небольшой отступ снизу */
         }
 
+        #content {
+            margin-top: 20px; /* Добавляем отступ сверху */
+        }
         .search-field {
             display: inline-block; /* Делаем поле поиска блочным элементом */
-            margin-bottom: 10px; /* Добавляем отступ между полем поиска и кнопками */
+            margin-bottom: 5px; /* Добавляем отступ между полем поиска и кнопками */
             background-color: #FFF; /* Белый цвет фона */
             padding: 5px 10px; /* Отступы */
-            border-radius: 5px; /* Закругленные углы */
+            border-radius: 25px; /* Закругленные углы */
             margin-right: 5px; /* Отступ между заголовком и полем ввода */
         }
 
@@ -54,14 +38,20 @@
         }
 
         .button {
-            background-color: #FFD700; /* Желтый цвет фона */
-            color: black; /* Цвет текста */
-            border: none; /* Убираем границу */
-            padding: 8px 20px; /* Отступы */
-            border-radius: 5px; /* Закругленные углы */
-            text-decoration: none; /* Убираем подчеркивание */
-            margin-right: 5px; /* Отступ между кнопками */
-        }
+           display: inline-block;
+           padding: 10px 20px;
+           background-color: #FFD700;
+           color: black;
+           text-align: center;
+           text-decoration: none;
+           font-size: 20px;
+           border-radius: 15px;
+           border: none;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+           opacity: 0.9;
+           font-style: oblique;
+         }
 
         .button:hover {
             background-color: #FDD835; /* Изменяем цвет фона при наведении */
@@ -70,7 +60,7 @@
 </head>
 <body>
 
-<div class="container">
+<div id="content">
     <!-- Заголовок "Поиск клиента:" и поле поиска объединены -->
     <form class="search-field" action="/search" method="GET">
         <input type="text" name="query" placeholder="Поиск клиента">
@@ -82,6 +72,21 @@
     <a href="/add_client" onclick="loadPage(this.href); return false;" class="button">Добавить клиента</a>
     <a href="/clients_list" onclick="loadPage(this.href); return false;" class="button">Список клиентов</a>
 </div>
+
+<!-- Контейнер для загрузки содержимого через AJAX -->
+
+
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function(result) {
+                $("#content").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+</script>
 
 </body>
 </html>
