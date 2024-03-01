@@ -6,31 +6,32 @@
     <title>My Gym App</title>
     <!-- Подключаем внешний файл стилей -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Добавляем стили для заголовка -->
     <style>
         /* Стили для дашборда */
-    .dashboard {
-        display: flex;
-        justify-content: space-around; /* Выравниваем блоки дашборда по горизонтали с промежутками между ними */
-        align-items: center; /* Выравниваем блоки по вертикали по центру */
-        margin-top: 50px; /* Отступ сверху */
-    }
+        .dashboard {
+            display: flex;
+            justify-content: space-around; /* Выравниваем блоки дашборда по горизонтали с промежутками между ними */
+            align-items: center; /* Выравниваем блоки по вертикали по центру */
+            margin-top: 50px; /* Отступ сверху */
+        }
 
-    /* Стили для каждого блока дашборда */
-    .dashboard-item {
-        background-color: #f5f5f5; /* Цвет фона блока */
-        padding: 20px; /* Внутренний отступ */
-        border-radius: 10px; /* Закругленные углы */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
-        text-align: center; /* Выравнивание текста по центру */
-        transition: transform 0.3s ease; /* Плавное изменение при наведении */
-    }
+        /* Стили для каждого блока дашборда */
+        .dashboard-item {
+            background-color: rgba(252, 150, 192, 0.2); /* Цвет фона блока */
+            padding: 20px; /* Внутренний отступ */
+            border-radius: 50px; /* Закругленные углы */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+            text-align: center; /* Выравнивание текста по центру */
+            transition: transform 0.3s ease; /* Плавное изменение при наведении */
+        }
 
-    /* Эффект при наведении на блоки дашборда */
-    .dashboard-item:hover {
-        transform: translateY(-5px); /* Немного поднимаем блок при наведении */
-    }
+        /* Эффект при наведении на блоки дашборда */
+        .dashboard-item:hover {
+            transform: translateY(-5px); /* Немного поднимаем блок при наведении */
+        }
 
         /* Стили для заголовка */
         h1 {
@@ -45,7 +46,7 @@
             padding: 10px 20px; /* Добавляем отступ внутри рамки */
             display: inline-block; /* Делаем заголовок блочным элементом */
             background-color: #FFD700; /* Цвет фона как у кнопок (золотой) */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Добавляем тень */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Добавляем тень */
             transition: all 0.3s ease; /* Плавное изменение стиля при наведении */
             opacity: 0.9;
             font-style: oblique;
@@ -53,19 +54,24 @@
 
         /* Стили для контейнера */
         .container {
-            background-color: rgba(139, 0, 190, 0.2); /* Цвет фона контейнера с небольшой прозрачностью */
+            background-color: rgba(64, 224, 208, 0.4); /* Цвет фона контейнера с небольшой прозрачностью */
             min-height: 20vh;
             padding: 10px;
             opacity: 1;
-            border-radius: 50px;
+            border-radius: 5px;
         }
+
         /* Стили для контейнера 2 */
         .container1 {
             background-color: rgba(64, 224, 208, 0.2); /* Цвет фона контейнера с небольшой прозрачностью */
             min-height: 120vh;
             padding: 10px;
             opacity: 1;
-            border-radius: 50px;
+            border-radius: 5px;
+            display: flex; /* Используем flexbox для выравнивания по центру */
+            justify-content: center; /* Выравнивание по центру по горизонтали */
+            align-items: flex-start; /* Выравнивание по центру по вертикали */
+
         }
 
         /* Дополнительные стили для ссылок */
@@ -81,24 +87,24 @@
             margin: 0 10px;
         }
 
-       .button {
-           display: inline-block;
-           padding: 10px 20px;
-           background-color: #FFD700;
-           color: black;
-           text-align: center;
-           text-decoration: none;
-           font-size: 20px;
-           border-radius: 15px;
-           border: none;
-           cursor: pointer;
-           transition: background-color 0.3s ease;
-           opacity: 0.9;
-           font-style: oblique;
-         }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            opacity: 0.9;
+            font-style: oblique;
+        }
 
         .button:hover {
-            background-color: #FFC107;
+            background-color: #0000bb;
         }
     </style>
 </head>
@@ -106,52 +112,64 @@
 
 <div class="container">
     <a href="/">
-        <h1>CRM Администратор</h1>
+        <h1 class="fas fa-users"</i></h1>
     </a>
 
     <ul>
-        <li><a href="#" onclick="loadPage('/clients')" class="button">Клиенты</a></li>
-        <li><a href="#" onclick="loadPage('/equipment')" class="button">Оборудование</a></li>
+        <li><a href="#" onclick="loadPage('/clients')" class="button"><i class="fas fa-users"></i> </a></li>
+        <li><a href="#" onclick="loadPage('/equipment')" class="button"><i class="fas fa-dumbbell"></i></a></li>
         <li><a href="#" onclick="loadPage('/abonements')" class="button">Абонементы</a></li>
         <li><a href="#" onclick="loadPage('/halls')" class="button">Залы</a></li>
-        <li><a href="#" onclick="loadPage('/trainers')" class="button">Тренеры</a></li>
-        <li><a href="#" onclick="loadPage('/workouts')" class="button">Занятия</a></li>
+        <li><a href="#" onclick="loadPage('/trainers')" class="button"><i class="fas fa-user-tie"></i></a></li>
+        <li><a href="#" onclick="loadPage('/workouts')" class="button"><i class="fas fa-calendar-alt"></i></a></li>
     </ul>
 
     <!-- Добавленный элемент #content -->
     <div id="content"></div>
 
 </div>
-<div class = container1>
-      <!-- Дашборд -->
+<div class=container1>
+    <!-- Дашборд -->
     <div class="dashboard">
-    <!-- Блок с количеством клиентов -->
-            <div class="dashboard-item">
+        <!-- Блок с количеством клиентов -->
+        <div class="dashboard-item">
             <h2>Количество клиентов</h2>
             <p>{{ clients_count }}</p> <!-- Выводим количество клиентов -->
         </div>
 
-    <!-- Добавьте другие блоки дашборда с аналогичной информацией о других аспектах вашего приложения -->
+        <!-- Добавьте другие блоки дашборда с аналогичной информацией о других аспектах вашего приложения -->
+
+        <div class="dashboard">
+            <div class="dashboard-item">
+                <h2>Abonements</h2>
+                <ul>
+                    {% for abonement in abonements_count %}
+                        <li>{{ abonement.abonement_type }}: {{ abonement.price }}</li>
+                        <li></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+
     </div>
-</div>
 
-<!-- Подключаем библиотеку jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Подключаем библиотеку jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Подключаем скрипт -->
-<script>
-    function loadPage(url) {
-        $.ajax({
-            url: url,
-            success: function(result) {
-                // Обновляем содержимое #content на странице данными из AJAX-запроса
-                $("#content").html(result);
-            }
-        });
-        return false; // предотвращает переход по ссылке
-    }
-</script>
-
+    <!-- Подключаем скрипт -->
+    <script>
+        function loadPage(url) {
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    // Обновляем содержимое #content на странице данными из AJAX-запроса
+                    $(".container1").html(result);
+                }
+            });
+            return false; // предотвращает переход по ссылке
+        }
+    </script>
 
 
 </body>

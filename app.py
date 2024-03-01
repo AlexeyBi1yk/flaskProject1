@@ -4,8 +4,10 @@ from datetime import datetime
 from sqlalchemy import or_
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/gym'  # Замените username, password и db_name на ваши данные
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/gym'  # Замените username, password и db_name на ваши данные
 db = SQLAlchemy(app)
+
 
 # Определяем модели данных
 class Clients(db.Model):
@@ -28,11 +30,42 @@ class Clients(db.Model):
         return client
 
 
+class ClientSchedule(db.Model):
+    __tablename__ = 'client_schedule'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    client_id = db.Column(db.Integer)
+    trainer_id = db.Column(db.Integer)
+    activity_type = db.Column(db.String(50))
+    activity_name = db.Column(db.String(100))
+    date_time = db.Column(db.DateTime)
+    hall_id = db.Column(db.Integer)
+
+
+class GroupSchedule(db.Model):
+    __tablename__ = 'group_schedule'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    trainer_id = db.Column(db.Integer)
+    activity_type = db.Column(db.String(50))
+    activity_name = db.Column(db.String(100))
+    date_time = db.Column(db.DateTime)
+    hall_id = db.Column(db.Integer)
+
+
 class Equipment(db.Model):
     __tablename__ = 'equipment'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
     quantity = db.Column(db.Integer)
+    in_working = db.Column(db.Boolean)
+    repair = db.Column(db.Boolean)
+
+
+class DutyTrainer(db.Model):
+    __tablename__ = 'duty_trainer'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    trainer_id = db.Column(db.Integer)
+    duty_date = db.Column(db.Date)
+
 
 class Abonements(db.Model):
     __tablename__ = 'abonements'
@@ -42,11 +75,13 @@ class Abonements(db.Model):
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
 
+
 class Halls(db.Model):
     __tablename__ = 'halls'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     capacity = db.Column(db.Integer)
+
 
 class Trainers(db.Model):
     __tablename__ = 'trainers'
@@ -56,16 +91,14 @@ class Trainers(db.Model):
     specialization = db.Column(db.String(100))
     phone_number = db.Column(db.String(20))
 
-class ClientWorkouts(db.Model):
-    __tablename__ = 'client_workouts'
-    id = db.Column(db.Integer, primary_key=True)
-    client_first_name = db.Column(db.String(50))
-    client_last_name = db.Column(db.String(50))
-    trainer_first_name = db.Column(db.String(50))
-    trainer_last_name = db.Column(db.String(50))
-    activity_type = db.Column(db.String(50))
-    activity_name = db.Column(db.String(100))
-    date_time = db.Column(db.DateTime)
+
+class TrainersDutyList(db.Model):
+    __tablename__ = 'trainers_duty_list'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    trainer_id = db.Column(db.Integer)
+    duty_date = db.Column(db.Date)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
 
 
 # Основной маршрут - главная страница
@@ -73,17 +106,21 @@ class ClientWorkouts(db.Model):
 def index():
     # Получаем количество клиентов из базы данных
     clients_count = Clients.query.count()
-    return render_template('index.html', clients_count=clients_count)
+    abonements_count = Abonements.query.all()
+    return render_template('index.html', clients_count=clients_count, abonements_count=abonements_count)
+
 
 # Маршрут для отображения клиентов
 @app.route('/clients')
 def clients():
     return render_template('clients.html')
 
+
 @app.route('/clients_list')
 def clients_list():
     clients = Clients.query.all()  # Извлекаем всех клиентов из базы данных
     return render_template('clients_list.html', clients=clients)
+
 
 # Маршрут для отображения оборудования
 @app.route('/equipment')
@@ -91,11 +128,13 @@ def equipment():
     equipment = Equipment.query.all()  # Извлекаем всё оборудование из базы данных
     return render_template('equipment.html', equipment=equipment)
 
+
 # Маршрут для отображения абонементов
 @app.route('/abonements')
 def abonements():
     abonements = Abonements.query.all()  # Извлекаем все абонементы из базы данных
     return render_template('abonements.html', abonements=abonements)
+
 
 # Маршрут для отображения залов
 @app.route('/halls')
@@ -103,17 +142,20 @@ def halls():
     halls = Halls.query.all()  # Извлекаем все залы из базы данных
     return render_template('halls.html', halls=halls)
 
+
 # Маршрут для отображения тренеров
 @app.route('/trainers')
 def trainers():
     trainers = Trainers.query.all()  # Извлекаем всех тренеров из базы данных
     return render_template('trainers.html', trainers=trainers)
 
+
 # Маршрут для отображения тренировок
 @app.route('/workouts')
 def workouts():
     workouts = ClientWorkouts.query.all()  # Извлекаем все тренировки из базы данных
     return render_template('workouts.html', workouts=workouts)
+
 
 @app.route('/search')
 def search():
@@ -124,17 +166,15 @@ def search():
         search_results = Clients.query.filter(
             or_(
                 Clients.first_name.ilike(f'%{query}%'),  # Ищем по имени (игнорируя регистр)
-                Clients.last_name.ilike(f'%{query}%'),   # Ищем по фамилии (игнорируя регистр)
-                Clients.sub_type.ilike(f'%{query}%'),    # Ищем по типу подписки (игнорируя регистр)
-                Clients.phone_number.ilike(f'%{query}%') # Ищем по номеру телефона (игнорируя регистр)
+                Clients.last_name.ilike(f'%{query}%'),  # Ищем по фамилии (игнорируя регистр)
+                Clients.sub_type.ilike(f'%{query}%'),  # Ищем по типу подписки (игнорируя регистр)
+                Clients.phone_number.ilike(f'%{query}%')  # Ищем по номеру телефона (игнорируя регистр)
             )
         ).all()
     else:
         search_results = []
 
     return render_template('client_search.html', search_results=search_results, query=query)
-
-
 
 
 @app.route('/add_client', methods=['GET', 'POST'])
@@ -150,7 +190,8 @@ def add_client():
         phone_number = request.form['phone_number']  # Получаем номер телефона из формы
         # Создание нового клиента
         client = Clients(first_name=first_name, last_name=last_name, birth_date=birth_date, gender=gender,
-                         sub_type=sub_type, sub_expiry=sub_expiry, phone_number=phone_number)  # Используем полученный номер телефона при создании клиента
+                         sub_type=sub_type, sub_expiry=sub_expiry,
+                         phone_number=phone_number)  # Используем полученный номер телефона при создании клиента
         db.session.add(client)
         db.session.commit()
 

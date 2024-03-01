@@ -10,6 +10,7 @@
             text-align: center;
             margin-top: 50px;
         }
+
         h1, p {
             display: inline-block;
             padding: 10px 20px;
@@ -19,10 +20,12 @@
             border-radius: 5px; /* Закругленные углы */
             margin-bottom: 10px; /* Нижний отступ */
         }
+
         p {
             display: block;
             margin-top: 10px; /* Верхний отступ */
         }
+
         .container a {
             display: inline-block;
             margin-top: 10px; /* Верхний отступ */
@@ -33,21 +36,26 @@
             text-decoration: none; /* Убираем подчеркивание ссылки */
             border-radius: 25px; /* Закругленные углы */
         }
+
         .container a:hover {
             background-color: #FDD835; /* Более яркий желтый цвет фона кнопки при наведении */
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         th {
             background-color: rgba(255, 255, 0, 0.5); /* Синий с прозрачностью 0.5 */
         }
@@ -55,21 +63,21 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Результаты поиска</h1>
-        <p>Вы искали: {{ query }}</p>
-        <table>
-            <tr>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Дата рождения</th>
-                <th>Пол</th>
-                <th>Тип абонемента</th>
-                <th>Окончание абонемента</th>
-                <th>Номер телефона</th>
-                <th>Действия</th> <!-- Новый заголовок столбца для кнопки "Редактировать" -->
-            </tr>
-            {% for client in search_results %}
+<div class="container">
+    <h1>Результаты поиска</h1>
+    <p>Вы искали: {{ query }}</p>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Дата рождения</th>
+            <th>Пол</th>
+            <th>Тип абонемента</th>
+            <th>Окончание абонемента</th>
+            <th>Номер телефона</th>
+            <th>Действия</th> <!-- Новый заголовок столбца для кнопки "Редактировать" -->
+        </tr>
+        {% for client in search_results %}
             <tr>
                 <td>{{ client.first_name }}</td>
                 <td>{{ client.last_name }}</td>
@@ -78,13 +86,14 @@
                 <td>{{ client.sub_type }}</td>
                 <td>{{ client.sub_expiry }}</td>
                 <td>{{ client.phone_number }}</td>
-                <td><a href="{{ url_for('edit_client', id=client.id) }}">Редактировать</a></td> <!-- Кнопка "Редактировать" -->
+                <td><a href="{{ url_for('edit_client', id=client.id) }}">Редактировать</a></td>
+                <!-- Кнопка "Редактировать" -->
             </tr>
-            {% endfor %}
-        </table>
-        <div>
-            <p><a href="/">На главную</a></p>
-        </div>
+        {% endfor %}
+    </table>
+    <div>
+        <p><a href="/">На главную</a></p>
     </div>
+</div>
 </body>
 </html>

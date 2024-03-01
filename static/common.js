@@ -1,7 +1,7 @@
 // Ожидаем, пока загрузится вся страница
-$(document).ready(function() {
+$(document).ready(function () {
     // Обработчик события отправки формы
-    $(".search-form").submit(function(event) {
+    $(".search-form").submit(function (event) {
         // Предотвращаем стандартное поведение браузера (перезагрузку страницы)
         event.preventDefault();
 
@@ -13,7 +13,7 @@ $(document).ready(function() {
             type: "GET", // Метод запроса
             url: $(this).attr("action"), // URL для отправки запроса
             data: formData, // Данные формы
-            success: function(response) {
+            success: function (response) {
                 // Обновляем содержимое страницы
                 $("#content").html(response);
             }

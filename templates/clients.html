@@ -20,6 +20,7 @@
         #content {
             margin-top: 20px; /* Добавляем отступ сверху */
         }
+
         .search-field {
             display: inline-block; /* Делаем поле поиска блочным элементом */
             margin-bottom: 5px; /* Добавляем отступ между полем поиска и кнопками */
@@ -38,20 +39,20 @@
         }
 
         .button {
-           display: inline-block;
-           padding: 10px 20px;
-           background-color: #FFD700;
-           color: black;
-           text-align: center;
-           text-decoration: none;
-           font-size: 20px;
-           border-radius: 15px;
-           border: none;
-           cursor: pointer;
-           transition: background-color 0.3s ease;
-           opacity: 0.9;
-           font-style: oblique;
-         }
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            opacity: 0.9;
+            font-style: oblique;
+        }
 
         .button:hover {
             background-color: #FDD835; /* Изменяем цвет фона при наведении */
@@ -80,8 +81,8 @@
     function loadPage(url) {
         $.ajax({
             url: url,
-            success: function(result) {
-                $("#content").html(result);
+            success: function (result) {
+                $(".container1").html(result);
             }
         });
         return false; // предотвращает переход по ссылке

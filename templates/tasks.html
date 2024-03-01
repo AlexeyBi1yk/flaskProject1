@@ -25,18 +25,19 @@
             <th>Действия</th> <!-- Новый заголовок для кнопки -->
         </tr>
         {% for task in tasks %}
-        <tr>
-            <td>{{ task.task_name }}</td>
-            <td>{{ task.description }}</td>
-            <td style="color: {{ 'red' if task.importance == 'high' else 'black' }}">{{ task.importance }}</td>
-            <td>
-                <input type="checkbox" id="status_{{ task.id }}" onclick="toggleCompleted('{{ task.id }}')" {% if task.status == 'Выполнено' %} checked {% endif %} >
-            </td>
-            <td>{{ task.due_date }}</td>
-            <td>
-                <button onclick="deleteTask('{{ task.id }}')">Удалить</button>
-            </td>
-        </tr>
+            <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.description }}</td>
+                <td style="color: {{ 'red' if task.importance == 'high' else 'black' }}">{{ task.importance }}</td>
+                <td>
+                    <input type="checkbox" id="status_{{ task.id }}" onclick="toggleCompleted('{{ task.id }}')"
+                            {% if task.status == 'Выполнено' %} checked {% endif %} >
+                </td>
+                <td>{{ task.due_date }}</td>
+                <td>
+                    <button onclick="deleteTask('{{ task.id }}')">Удалить</button>
+                </td>
+            </tr>
         {% endfor %}
     </table>
 </div>
@@ -49,7 +50,7 @@
     function loadPage(url) {
         $.ajax({
             url: url,
-            success: function(result) {
+            success: function (result) {
                 $("#content").html(result);
             }
         });
@@ -61,7 +62,7 @@
         $.ajax({
             url: '/tasks/' + taskId,
             type: 'DELETE',
-            success: function(result) {
+            success: function (result) {
                 if (result.success) {
                     loadPage('/tasks'); // Загружаем страницу задач снова после удаления
                 } else {

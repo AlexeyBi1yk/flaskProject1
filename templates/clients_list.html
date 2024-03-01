@@ -10,35 +10,38 @@
             text-align: center;
             margin-top: 50px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: #ffffcc; /* бледно-желтый цвет фона */
         }
+
         th, td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
+
         th {
             background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Список клиентов</h1>
-        <table>
-            <tr>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Дата рождения</th>
-                <th>Пол</th>
-                <th>Тип абонемента</th>
-                <th>Окончание абонемента</th>
-                <th>Номер телефона</th>
-            </tr>
-            {% for client in clients %}
+<div id="content">
+    <h1>Список клиентов</h1>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Дата рождения</th>
+            <th>Пол</th>
+            <th>Тип абонемента</th>
+            <th>Окончание абонемента</th>
+            <th>Номер телефона</th>
+        </tr>
+        {% for client in clients %}
             <tr>
                 <td>{{ client.first_name }}</td>
                 <td>{{ client.last_name }}</td>
@@ -48,9 +51,9 @@
                 <td>{{ client.sub_expiry }}</td>
                 <td>{{ client.phone_number }}</td>
             </tr>
-            {% endfor %}
-        </table>
-        <p><a href="/">На главную</a></p>
-    </div>
+        {% endfor %}
+    </table>
+    <p><a href="/">На главную</a></p>
+</div>
 </body>
 </html>
