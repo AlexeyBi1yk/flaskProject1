@@ -5,7 +5,7 @@ from sqlalchemy import or_
 
 app = Flask(__name__)
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/gym'  # Замените username, password и db_name на ваши данные
+    'SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/gym'
 db = SQLAlchemy(app)
 
 
@@ -33,12 +33,30 @@ class Clients(db.Model):
 class ClientSchedule(db.Model):
     __tablename__ = 'client_schedule'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    client_id = db.Column(db.Integer)
-    trainer_id = db.Column(db.Integer)
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
+    trainer_id = db.Column(db.Integer, db.ForeignKey('trainer.id'))
     activity_type = db.Column(db.String(50))
     activity_name = db.Column(db.String(100))
     date_time = db.Column(db.DateTime)
-    hall_id = db.Column(db.Integer)
+    hall_id = db.Column(db.Integer, db.ForeignKey('hall.id'))
+
+    @classmethod
+    def create(cls, client_id,
+               trainer_id,
+               activity_type,
+               activity_name,
+               date_time,
+               hall_id):
+        workout = cls(client_id=client_id,
+                      trainer_id=trainer_id,
+                      activity_type=activity_type,
+                      activity_name=activity_name,
+                      date_time=date_time,
+                      hall_id=hall_id)
+
+        db.session.add(workout)
+        db.session.commit()
+        return workout
 
 
 class GroupSchedule(db.Model):
@@ -110,6 +128,10 @@ def index():
     return render_template('index.html', clients_count=clients_count, abonements_count=abonements_count)
 
 
+@app.route('/client_schedule')
+def client_schedule():
+    workouts = ClientSchedule.query.all()
+    return render_template('client_schedule.html', workouts=workouts)
 # Маршрут для отображения клиентов
 @app.route('/clients')
 def clients():
