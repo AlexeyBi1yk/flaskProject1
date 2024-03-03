@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import or_
 
+
 app = Flask(__name__)
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/gym'
@@ -28,35 +29,6 @@ class Clients(db.Model):
         db.session.add(client)
         db.session.commit()
         return client
-
-
-class ClientSchedule(db.Model):
-    __tablename__ = 'client_schedule'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
-    trainer_id = db.Column(db.Integer, db.ForeignKey('trainer.id'))
-    activity_type = db.Column(db.String(50))
-    activity_name = db.Column(db.String(100))
-    date_time = db.Column(db.DateTime)
-    hall_id = db.Column(db.Integer, db.ForeignKey('hall.id'))
-
-    @classmethod
-    def create(cls, client_id,
-               trainer_id,
-               activity_type,
-               activity_name,
-               date_time,
-               hall_id):
-        workout = cls(client_id=client_id,
-                      trainer_id=trainer_id,
-                      activity_type=activity_type,
-                      activity_name=activity_name,
-                      date_time=date_time,
-                      hall_id=hall_id)
-
-        db.session.add(workout)
-        db.session.commit()
-        return workout
 
 
 class GroupSchedule(db.Model):
@@ -119,6 +91,45 @@ class TrainersDutyList(db.Model):
     end_time = db.Column(db.Time)
 
 
+class ClientSchedule(db.Model):
+    __tablename__ = 'client_schedule'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    client_name = db.Column(db.String(50))
+    trainer_name = db.Column(db.String(50))
+    activity_type = db.Column(db.String(50))
+    activity_name = db.Column(db.String(100))
+    date_time = db.Column(db.DateTime)
+    hall = db.Column(db.String(50))
+    phone_number = db.Column(db.String(20))
+
+    @classmethod
+    def create(cls, client_name, trainer_name, activity_type, activity_name, date_time, hall, phone_number):
+        workout = cls(client_name=client_name, trainer_name=trainer_name, activity_type=activity_type,
+                      activity_name=activity_name, date_time=date_time, hall=hall, phone_number=phone_number)
+        db.session.add(workout)
+        db.session.commit()
+        return workout
+
+    @classmethod
+    def edit(cls, schedule_id, **kwargs):
+        schedule = cls.query.get(schedule_id)
+        if schedule:
+            for attr, value in kwargs.items():
+                setattr(schedule, attr, value)
+            db.session.commit()
+            return schedule
+        return None
+
+    @classmethod
+    def delete(cls, schedule_id):
+        schedule = cls.query.get(schedule_id)
+        if schedule:
+            db.session.delete(schedule)
+            db.session.commit()
+            return True
+        return False
+
+
 # Основной маршрут - главная страница
 @app.route('/')
 def index():
@@ -128,10 +139,51 @@ def index():
     return render_template('index.html', clients_count=clients_count, abonements_count=abonements_count)
 
 
+@app.route('/group_schedule')
+def group_schedule():
+    group_workouts = GroupSchedule.query.all()
+    return render_template('group_schedule.html', group_workouts=group_workouts)
+
+
 @app.route('/client_schedule')
 def client_schedule():
     workouts = ClientSchedule.query.all()
     return render_template('client_schedule.html', workouts=workouts)
+
+
+@app.route('/add_in_client_schedule', methods=['GET', 'POST'])
+def add_schedule():
+    if request.method == 'POST':
+        # Получение данных из формы
+        print(request.form)
+        client_name = request.form['client_name']
+        trainer_name = request.form['trainer_name']
+        activity_type = request.form['activity_type']
+        activity_name = request.form['activity_name']
+        date_time_iso = request.form['date_time']
+        #date_time = datetime.strptime(request.form['date_time'], '%Y-%m-%d')
+        # Преобразование строки времени из формата ISO в формат '%Y-%m-%d %H:%M'
+        date_time = datetime.strptime(date_time_iso, '%Y-%m-%dT%H:%M')
+        hall = request.form['hall']  # Получаем номер телефона из формы
+        phone_number = request.form['phone_number']
+        # Создание нового клиента
+        client_schedule = ClientSchedule(client_name=client_name,
+                                         trainer_name=trainer_name,
+                                         activity_type=activity_type,
+                                         activity_name=activity_name,
+                                         date_time=date_time,
+                                         hall=hall,
+                                         phone_number=phone_number)
+        db.session.add(client_schedule)
+        db.session.commit()
+
+        return redirect(url_for('index'))  # Перенаправление на главную страницу
+    # Получение списка всех тренеров
+    trainers = Trainers.query.all()
+    halls = Halls.query.all()
+    return render_template('add_in_client_schedule.html', trainers=trainers, halls=halls)
+
+
 # Маршрут для отображения клиентов
 @app.route('/clients')
 def clients():
@@ -175,7 +227,7 @@ def trainers():
 # Маршрут для отображения тренировок
 @app.route('/workouts')
 def workouts():
-    workouts = ClientWorkouts.query.all()  # Извлекаем все тренировки из базы данных
+    workouts = ClientSchedule.query.all().query.all()  # Извлекаем все тренировки из базы данных
     return render_template('workouts.html', workouts=workouts)
 
 
@@ -242,9 +294,6 @@ def edit_client(id):
         return redirect(url_for('index'))  # Перенаправляем на главную страницу
 
     return render_template('edit_client.html', client=client)
-
-
-# Ваш существующий код Flask
 
 
 if __name__ == '__main__':

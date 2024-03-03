@@ -42,12 +42,12 @@
         </tr>
         {% for workout in workouts %}
             <tr>
-                <td>{{ workout.client_id}}</td>
-                <td>{{ workout. trainer_id }}</td>
+                <td>{{ workout.client_name }}</td>
+                <td>{{ workout. trainer_name }}</td>
                 <td>{{ workout. activity_type }}</td>
                 <td>{{ workout.activity_name }}</td>
                 <td>{{ workout.date_time }}</td>
-                <td>{{ workout.hall_id }}</td>
+                <td>{{ workout.hall }}</td>
             </tr>
         {% endfor %}
     </table>
