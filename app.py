@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import or_
-
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config[
@@ -34,11 +34,19 @@ class Clients(db.Model):
 class GroupSchedule(db.Model):
     __tablename__ = 'group_schedule'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    trainer_id = db.Column(db.Integer)
+    trainer_name = db.Column(db.String(50))
     activity_type = db.Column(db.String(50))
     activity_name = db.Column(db.String(100))
     date_time = db.Column(db.DateTime)
-    hall_id = db.Column(db.Integer)
+    hall = db.Column(db.String(50))
+
+    @classmethod
+    def create(cls, trainer_name, activity_type, activity_name, date_time, hall):
+        workout = cls(trainer_name=trainer_name, activity_type=activity_type,
+                      activity_name=activity_name, date_time=date_time, hall=hall)
+        db.session.add(workout)
+        db.session.commit()
+        return workout
 
 
 class Equipment(db.Model):
@@ -145,29 +153,68 @@ def group_schedule():
     return render_template('group_schedule.html', group_workouts=group_workouts)
 
 
+@app.route('/add_in_group_schedule', methods=['GET', 'POST'])
+def add_in_group_schedule():
+    if request.method == 'POST':
+        # Получение данных из формы
+        trainer_name = request.form['trainer_name']
+        activity_type = request.form['activity_type']
+        activity_name = request.form['activity_name']
+        date_time_iso = request.form['date_time']
+        date_time = datetime.strptime(date_time_iso, '%Y-%m-%dT%H:%M')
+        hall = request.form['hall']  # Получаем номер телефона из формы
+        # Создание нового клиента
+        group_schedule = GroupSchedule(trainer_name=trainer_name,
+                                        activity_type=activity_type,
+                                        activity_name=activity_name,
+                                        date_time=date_time,
+                                        hall=hall)
+        db.session.add(group_schedule)
+        db.session.commit()
+
+        return redirect(url_for('index'))  # Перенаправление на главную страницу
+    # Получение списка всех тренеров
+    trainers = Trainers.query.all()
+    halls = Halls.query.all()
+    return render_template('add_in_group_schedule.html', trainers=trainers, halls=halls)
+
+
 @app.route('/client_schedule')
 def client_schedule():
-    workouts = ClientSchedule.query.all()
-    return render_template('client_schedule.html', workouts=workouts)
+    # Получаем параметры фильтрации из запроса
+    trainer_name = request.args.get('trainer')
+    date = request.args.get('date')
+    # Инициализируем базовый запрос
+    query = ClientSchedule.query
+
+    # Применяем фильтры, если они указаны
+    if trainer_name:
+        query = query.filter(ClientSchedule.trainer_name == trainer_name)
+    if date:
+        query = query.filter(func.DATE(ClientSchedule.date_time) == date)
+
+    # Получаем список тренировок в соответствии с фильтрами
+    workouts = query.all()
+    trainers = Trainers.query.all()
+    return render_template('client_schedule.html', workouts=workouts, trainers=trainers)
 
 
 @app.route('/add_in_client_schedule', methods=['GET', 'POST'])
 def add_schedule():
     if request.method == 'POST':
         # Получение данных из формы
-        print(request.form)
         client_name = request.form['client_name']
         trainer_name = request.form['trainer_name']
         activity_type = request.form['activity_type']
         activity_name = request.form['activity_name']
         date_time_iso = request.form['date_time']
-        #date_time = datetime.strptime(request.form['date_time'], '%Y-%m-%d')
+        # date_time = datetime.strptime(request.form['date_time'], '%Y-%m-%d')
         # Преобразование строки времени из формата ISO в формат '%Y-%m-%d %H:%M'
         date_time = datetime.strptime(date_time_iso, '%Y-%m-%dT%H:%M')
         hall = request.form['hall']  # Получаем номер телефона из формы
         phone_number = request.form['phone_number']
         # Создание нового клиента
-        client_schedule = ClientSchedule(client_name=client_name,
+        client_schedule = GroupSchedule(client_name=client_name,
                                          trainer_name=trainer_name,
                                          activity_type=activity_type,
                                          activity_name=activity_name,
@@ -222,13 +269,6 @@ def halls():
 def trainers():
     trainers = Trainers.query.all()  # Извлекаем всех тренеров из базы данных
     return render_template('trainers.html', trainers=trainers)
-
-
-# Маршрут для отображения тренировок
-@app.route('/workouts')
-def workouts():
-    workouts = ClientSchedule.query.all().query.all()  # Извлекаем все тренировки из базы данных
-    return render_template('workouts.html', workouts=workouts)
 
 
 @app.route('/search')

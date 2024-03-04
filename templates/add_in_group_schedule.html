@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить запись в расписание</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Используемый шрифт */
+            background-color: #f8f9fa; /* Цвет фона */
+            margin: 0; /* Убираем отступы по умолчанию */
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center; /* Выравнивание заголовка по центру */
+            color: #000000; /* Цвет текста заголовка */
+        }
+
+        table {
+            margin: auto; /* Центрирование таблицы */
+            background-color: #fffacd; /* Цвет фона таблицы */
+            border-radius: 5px; /* Закругленные углы таблицы */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень таблицы */
+            border-collapse: collapse; /* Убираем отступы между ячейками */
+        }
+
+        th, td {
+            padding: 10px; /* Отступы в ячейках */
+            border: 1px solid #dee2e6; /* Границы ячеек */
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%; /* Ширина полей ввода и списка */
+            padding: 8px; /* Отступы в полях ввода и списках */
+            margin-top: 5px; /* Верхний отступ */
+            margin-bottom: 10px; /* Нижний отступ */
+            box-sizing: border-box; /* Учитываем padding в общей ширине */
+        }
+
+        input[type="submit"] {
+            width: auto; /* Ширина кнопки по содержимому */
+            padding: 10px 20px; /* Отступы в кнопке */
+            margin-top: 10px; /* Верхний отступ */
+            background-color: #FFD700; /* Цвет фона кнопки */
+            color: black; /* Цвет текста кнопки */
+            border: none; /* Убираем границу кнопки */
+            border-radius: 5px; /* Закругленные углы кнопки */
+            cursor: pointer; /* Курсор при наведении */
+            font-size: 16px; /* Размер шрифта */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FFD700; /* Цвет фона кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+<h1>Добавить запись в расписание</h1>
+<form action="/add_in_group_schedule" method="post">
+    <table>
+        <tr>
+            <td><label for="trainer_name">Тренер:</label></td>
+            <td>
+                <select id="trainer_name" name="trainer_name">
+                    {% for trainer in trainers %}
+                        <option value="{{ trainer.first_name }} {{ trainer.last_name }}">{{ trainer.first_name }} {{ trainer.last_name }}</option>
+                        ;
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="activity_type">Тип активности:</label></td>
+            <td>
+                <select id="activity_type" name="activity_type">
+                    <option value="Групповая">Групповая</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="activity_name">Название активности:</label></td>
+            <td>
+                <select id="activity_name" name="activity_name">
+                    <option value="Аэробика">Аэробика</option>
+                    <option value="Пауэрлифтинг">Пауэрлифтинг</option>
+                    <option value="Йога">Йога</option>
+                    <option value="Бодибилдинг">Бодибилдинг</option>
+                    <option value="Пилатес">Пилатес</option>
+                    <option value="Фитнес">Фитнес</option>
+                    <option value="Плавание">Плавание</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="date_time">Дата и время:</label></td>
+            <td><input type="datetime-local" id="date_time" name="date_time"></td>
+        </tr>
+
+        <tr>
+            <td><label for="hall">Зал:</label></td>
+            <td>
+                <select id="hall" name="hall">
+                    {% for hall in halls %}
+                        <option value="{{ hall.name }}">{{ hall.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Добавить запись"></td>
+        </tr>
+    </table>
+</form>
+
+
+</body>
+</html>

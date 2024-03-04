@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Индивидуальное расписание</title>
+    <title>Групповое расписание</title>
     <style>
         /* Ваши стили здесь */
         .container {
@@ -30,19 +30,17 @@
 </head>
 <body>
 <div id="content">
-    <h1>Индивидуальные тренировки</h1>
+    <h1>Групповые тренировки</h1>
     <table>
         <tr>
-            <th>Клиент</th>
             <th>Тренер</th>
             <th>Тип тренировки</th>
             <th>Вид спорта</th>
             <th>Дата</th>
             <th>Зал</th>
         </tr>
-        {% for workout in workouts %}
+        {% for workout in group_workouts %}
             <tr>
-                <td>{{ workout.client_name }}</td>
                 <td>{{ workout. trainer_name }}</td>
                 <td>{{ workout. activity_type }}</td>
                 <td>{{ workout.activity_name }}</td>
@@ -51,7 +49,7 @@
             </tr>
         {% endfor %}
     </table>
-    <p><a href="/">На главную</a></p>
+    <p class="button"><a href="/">На главную</a></p>
 </div>
 </body>
 </html>
