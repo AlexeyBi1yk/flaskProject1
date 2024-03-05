@@ -76,4 +76,19 @@ body {
     background-color: rgba(173, 216, 230, 0.3); /* Голубой цвет с прозрачностью 30% */
 }
 
+.button::after {
+    content: attr(data-text); /* Выводим текст из атрибута data-text */
+    position: absolute;
+    top: 100%; /* Располагаем текст под кнопкой */
+    left: 50%; /* Располагаем текст по центру относительно кнопки */
+    transform: translateX(-50%); /* Центрируем текст по горизонтали */
+    background-color: #fff; /* Цвет фона текста */
+    color: #000; /* Цвет текста */
+    padding: 5px; /* Отступы вокруг текста */
+    border-radius: 5px; /* Закругляем углы текста */
+    display: none; /* Изначально скрываем текст */
+}
 
+.button:hover::after {
+    display: block; /* Показываем текст при наведении */
+}

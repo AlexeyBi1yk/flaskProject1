@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Gym App</title>
+    <title>Главная</title>
     <!-- Подключаем внешний файл стилей -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Добавляем стили для заголовка -->
     <style>
+        .admin-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 20px; /* Добавляем отступы для лучшего визуального выделения заголовка */
+            color: #000; /* Цвет текста */
+            font-size: 24px; /* Размер шрифта */
+            font-weight: bold; /* Жирный шрифт */
+            z-index: 9999; /* Устанавливаем высокий уровень z-index, чтобы заголовок отображался поверх других элементов */
+        }
+
+
         /* Стили для дашборда */
         .dashboard {
             display: flex;
@@ -41,15 +53,19 @@
             margin-top: 20px;
             margin-bottom: 30px;
             color: #000; /* Цвет текста */
-            border: 2px solid #FFD700; /* Цвет рамки как у кнопок (золотой) */
-            border-radius: 25px; /* Закругленные углы */
+            border: 2px solid #00bfff; /* Цвет рамки как у кнопок (золотой) */
+            border-radius: 15px; /* Закругленные углы */
             padding: 10px 20px; /* Добавляем отступ внутри рамки */
             display: inline-block; /* Делаем заголовок блочным элементом */
-            background-color: #FFD700; /* Цвет фона как у кнопок (золотой) */
+            background-color: #00bfff; /* Цвет фона как у кнопок (золотой) */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Добавляем тень */
             transition: all 0.3s ease; /* Плавное изменение стиля при наведении */
             opacity: 0.9;
             font-style: oblique;
+        }
+
+        h1:hover {
+            background-color: #0000bb;
         }
 
         /* Стили для контейнера */
@@ -106,22 +122,25 @@
         .button:hover {
             background-color: #0000bb;
         }
+
     </style>
 </head>
 <body>
+<h2 class="admin-title">Система Администратор</h2>
 
 <div class="container">
     <a href="/">
-        <h1 class="fas fa-users"></h1>
+        <h1 class="fas fa-house-user"> Главная</h1>
     </a>
 
     <ul>
-        <li><a href="#" onclick="loadPage('/clients')" class="button"><i class="fas fa-users"></i> </a></li>
-        <li><a href="#" onclick="loadPage('/equipment')" class="button"><i class="fas fa-dumbbell"></i></a></li>
-        <li><a href="#" onclick="loadPage('/abonements')" class="button">Абонементы</a></li>
-        <li><a href="#" onclick="loadPage('/halls')" class="button">Залы</a></li>
-        <li><a href="#" onclick="loadPage('/trainers')" class="button"><i class="fas fa-user-tie"></i></a></li>
-        <li><a href="#" onclick="loadPage('/client_schedule')" class="button"><i class="fas fa-calendar-alt"></i></a>
+        <li><a href="#" onclick="loadPage('/clients')" class="button"><i class="fas fa-users"> Клиенты</i> </a></li>
+        <li><a href="#" onclick="loadPage('/trainers')" class="button"><i class="fas fa-user-tie"> Тренеры</i></a></li>
+        <li><a href="#" onclick="loadPage('/schedule')" class="button"><i class="fas fa-dumbbell"> Расписание</i></a>
+        </li>
+        <li><a href="#" onclick="loadPage('/equipment')" class="button"><i class="fas fa-tools"> Оборудование и
+            тренажеры</i></a></li>
+        <li><a href="#" onclick="loadPage('/halls')" class="button"><i class="fas fa-info-circle"> Информация</i></a>
         </li>
     </ul>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Клиенты</title>
+    <title>Расписание</title>
     <style>
         /* Общий стиль текста */
         body {
@@ -62,16 +62,8 @@
 <body>
 
 <div id="content">
-    <!-- Заголовок "Поиск клиента:" и поле поиска объединены -->
-    <form class="search-field" action="/search" method="GET">
-        <input type="text" name="query" placeholder="Поиск клиента">
-        <!-- Небольшой отступ между полем ввода и кнопкой поиска -->
-        <button type="submit" class="button">Поиск</button>
-    </form>
-
-    <!-- Кнопки "Список клиентов" и "Добавить клиента" остаются горизонтально -->
-    <a href="/add_client" onclick="loadPage(this.href); return false;" class="button">Добавить клиента</a>
-    <a href="/clients_list" onclick="loadPage(this.href); return false;" class="button">Список клиентов</a>
+    <a href="/add_in_client_schedule" onclick="loadPage(this.href); return false;" class="button">Добавить занятие</a>
+    <a href="/client_schedule" onclick="loadPage(this.href); return false;" class="button">Список занятий</a>
 </div>
 
 <!-- Контейнер для загрузки содержимого через AJAX -->
@@ -82,7 +74,7 @@
         $.ajax({
             url: url,
             success: function (result) {
-                $(".content").html(result);
+                $(".container1").html(result);
             }
         });
         return false; // предотвращает переход по ссылке

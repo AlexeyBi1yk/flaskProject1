@@ -146,6 +146,10 @@ def index():
     abonements_count = Abonements.query.all()
     return render_template('index.html', clients_count=clients_count, abonements_count=abonements_count)
 
+@app.route('/schedule')
+def schedule():
+    return render_template('schedule.html')
+
 
 @app.route('/group_schedule')
 def group_schedule():
