@@ -3,14 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список тренеров</title>
+    <title>Тренеры</title>
+    <style>
+        /* Общий стиль текста */
+        body {
+            font-family: oblique; /* Шрифт */
+            color: #000000; /* Цвет текста */
+        }
+
+        /* Стили для объединенного поля поиска */
+        .container {
+            text-align: center; /* Выравниваем содержимое по центру */
+            margin-bottom: 20px; /* Добавляем небольшой отступ снизу */
+        }
+        /* Стили для контейнера 2 */
+        container1 {
+            background-color: rgba(64, 224, 208, 0.2); /* Цвет фона контейнера с небольшой прозрачностью */
+            min-height: 120vh;
+            padding: 10px;
+            opacity: 1;
+            border-radius: 5px;
+            display: flex; /* Используем flexbox для выравнивания по центру */
+            justify-content: center; /* Выравнивание по центру по горизонтали */
+            align-items: flex-start; /* Выравнивание по центру по вертикали */
+
+        }
+
+        #content {
+            margin-top: 20px; /* Добавляем отступ сверху */
+        }
+
+        .search-field {
+            display: inline-block; /* Делаем поле поиска блочным элементом */
+            margin-bottom: 5px; /* Добавляем отступ между полем поиска и кнопками */
+            background-color: #FFF; /* Белый цвет фона */
+            padding: 5px 10px; /* Отступы */
+            border-radius: 25px; /* Закругленные углы */
+            margin-right: 5px; /* Отступ между заголовком и полем ввода */
+        }
+
+        .search-field input[type="text"] {
+            background-color: transparent; /* Прозрачное фоновое поле ввода */
+            border: none; /* Убираем границу */
+            font-size: inherit; /* Используем размер шрифта родительского элемента */
+            color: #333; /* Цвет текста */
+            width: 200px; /* Ширина поля ввода */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            opacity: 0.9;
+            font-style: oblique;
+        }
+
+        .button:hover {
+            background-color: #0000bb; /* Изменяем цвет фона при наведении */
+        }
+    </style>
 </head>
 <body>
-    <h1>Список тренеров</h1>
-    <ul>
-        {% for trainer in trainers %}
-            <li>{{ trainer.first_name }} {{ trainer.last_name }}</li>
-        {% endfor %}
-    </ul>
+
+<div id="content">
+
+    <a href="/trainers_list" onclick="loadPage(this.href); return false;" class="button">Список тренеров</a>
+    <a href="/duty_trainer" onclick="loadPage(this.href); return false;" class="button">Дежурный тренер</a>
+
+</div>
+
+<!-- Контейнер для загрузки содержимого через AJAX -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function (result) {
+                $(".container1").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+</script>
+
 </body>
 </html>

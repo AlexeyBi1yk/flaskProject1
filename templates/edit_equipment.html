@@ -12,10 +12,12 @@
             margin: 0; /* Убираем отступы по умолчанию */
             padding: 0;
         }
+
         .container {
             text-align: center;
             margin-top: 50px;
         }
+
         h1 {
             background-color: #00bfff; /* Яркий желтый цвет фона заголовка */
             color: black; /* Цвет текста заголовка */
@@ -24,12 +26,14 @@
             display: inline-block; /* Делаем заголовок блочным элементом */
             margin-bottom: 20px; /* Нижний отступ */
         }
+
         form {
             background-color: #ffffff; /* Цвет фона формы */
             padding: 20px; /* Внутренние отступы формы */
             border-radius: 5px; /* Закругленные углы формы */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень формы */
         }
+
         input[type="text"], input[type="date"], select {
             width: 100%; /* Ширина полей ввода и списка */
             padding: 8px; /* Отступы в полях ввода и списках */
@@ -39,6 +43,7 @@
             border: 1px solid #ced4da; /* Границы полей ввода и списка */
             border-radius: 5px; /* Закругленные углы полей ввода и списка */
         }
+
         input[type="submit"] {
             width: auto; /* Ширина кнопки по содержимому */
             padding: 10px 20px; /* Отступы в кнопке */
@@ -49,6 +54,7 @@
             cursor: pointer; /* Курсор при наведении */
             font-size: 16px; /* Размер шрифта */
         }
+
         input[type="submit"]:hover {
             background-color: #00bfff; /* Более яркий желтый цвет фона кнопки при наведении */
         }
@@ -56,25 +62,22 @@
 </head>
 <body>
     <div class="container">
-        <h2>Редактировать клиента</h2>
-        <form action="{{ url_for('edit_client', id=client.id) }}" method="post">
-            <label for="first_name">Имя:</label><br>
-            <input type="text" id="first_name" name="first_name" value="{{ client.first_name }}"><br>
-            <label for="last_name">Фамилия:</label><br>
-            <input type="text" id="last_name" name="last_name" value="{{ client.last_name }}"><br>
-            <label for="birth_date">Дата рождения:</label><br>
-            <input type="date" id="birth_date" name="birth_date" value="{{ client.birth_date }}"><br>
-            <label for="gender">Пол:</label><br>
-            <select id="gender" name="gender">
-                <option value="Мужской" {% if client.gender == 'Мужской' %}selected{% endif %}>Мужской</option>
-                <option value="Женский" {% if client.gender == 'Женский' %}selected{% endif %}>Женский</option>
+        <h2>Редактировать оборудование</h2>
+        <form action="{{ url_for('edit_equipment', id=equipment.id) }}" method="post">
+            <label for="name">Наименование:</label><br>
+            <input type="text" id="name" name="name" value="{{ equipment.name }}"><br>
+            <label for="quantity">Количество:</label><br>
+            <input type="text" id="quantity" name="quantity" value="{{ equipment.quantity }}"><br>
+            <label for="in_working">В работе:</label><br>
+            <select id="in_working" name="in_working">
+                <option value="Да" {% if equipment.in_working %} selected {% endif %}>Да</option>
+                <option value="Нет" {% if not equipment.in_working %} selected {% endif %}>Нет</option>
             </select><br>
-            <label for="sub_type">Тип абонемента:</label><br>
-            <input type="text" id="sub_type" name="sub_type" value="{{ client.sub_type }}"><br>
-            <label for="sub_expiry">Действительно до:</label><br>
-            <input type="date" id="sub_expiry" name="sub_expiry" value="{{ client.sub_expiry }}"><br>
-            <label for="phone_number">Номер телефона:</label><br>
-            <input type="text" id="phone_number" name="phone_number" value="{{ client.phone_number }}"><br><br>
+            <label for="repair">В ремонте:</label><br>
+            <select id="repair" name="repair">
+                <option value="Да" {% if equipment.repair %} selected {% endif %}>Да</option>
+                <option value="Нет" {% if not equipment.repair %} selected {% endif %}>Нет</option>
+            </select><br>
             <input type="submit" value="Сохранить изменения">
         </form>
         <p><a href="/">На главную</a></p>

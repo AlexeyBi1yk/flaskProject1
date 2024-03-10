@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import or_
 from sqlalchemy import func
+from openpyxl import load_workbook
 
 app = Flask(__name__)
 app.config[
@@ -57,12 +58,41 @@ class Equipment(db.Model):
     in_working = db.Column(db.Boolean)
     repair = db.Column(db.Boolean)
 
+    @classmethod
+    def create(cls, name, quantity, in_working, repair):
+        equipment = cls(name=name, quantity=quantity, in_working=in_working, repair=repair)
+        db.session.add(equipment)
+        db.session.commit()
+        return equipment
+
 
 class DutyTrainer(db.Model):
     __tablename__ = 'duty_trainer'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    trainer_id = db.Column(db.Integer)
+    trainer_name = db.Column(db.String(50))
     duty_date = db.Column(db.Date)
+
+    @classmethod
+    def create(cls, trainer_name, duty_date):
+        work_time = cls(trainer_name=trainer_name, duty_date=duty_date)
+        db.session.add(work_time)
+        db.session.commit()
+        return work_time
+
+    @classmethod
+    def edit(cls, trainer_name, **kwargs):
+        # Находим запись о дежурстве по имени тренера
+        schedule = cls.query.filter_by(trainer_name=trainer_name).first()
+        if schedule:
+            # Если запись найдена, обновляем атрибуты, если они были переданы
+            for attr, value in kwargs.items():
+                setattr(schedule, attr, value)
+            # Применяем изменения в базе данных
+            db.session.commit()
+            return schedule
+        else:
+            # Если запись не найдена, возвращаем None
+            return None
 
 
 class Abonements(db.Model):
@@ -88,15 +118,6 @@ class Trainers(db.Model):
     last_name = db.Column(db.String(50))
     specialization = db.Column(db.String(100))
     phone_number = db.Column(db.String(20))
-
-
-class TrainersDutyList(db.Model):
-    __tablename__ = 'trainers_duty_list'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    trainer_id = db.Column(db.Integer)
-    duty_date = db.Column(db.Date)
-    start_time = db.Column(db.Time)
-    end_time = db.Column(db.Time)
 
 
 class ClientSchedule(db.Model):
@@ -146,6 +167,46 @@ def index():
     abonements_count = Abonements.query.all()
     return render_template('index.html', clients_count=clients_count, abonements_count=abonements_count)
 
+
+@app.route('/duty_trainer')
+def duty_trainer():
+    # Получаем параметры фильтрации из запроса
+    trainer_name = request.args.get('trainer')
+    date = request.args.get('date')
+    # Инициализируем базовый запрос
+    query = DutyTrainer.query
+
+    # Применяем фильтры, если они указаны
+    if trainer_name:
+        query = query.filter(DutyTrainer.trainer_name == trainer_name)
+    if date:
+        query = query.filter(func.DATE(DutyTrainer.duty_date) == date)
+
+    # Получаем список тренировок в соответствии с фильтрами
+    duty_trainers = query.all()
+    trainers = Trainers.query.all()
+    return render_template('duty_trainer.html', duty_trainers=duty_trainers, trainers=trainers)
+
+
+@app.route('/add_in_duty_trainer', methods=['GET', 'POST'])
+def add_in_duty_trainer():
+    if request.method == 'POST':
+        # Получение данных из формы
+        trainer_name = request.form['trainer_name']
+        duty_date_str = request.form['duty_date']  # Получение даты из формы
+        duty_date = datetime.strptime(duty_date_str, '%Y-%m-%d')
+
+        # Создание новой записи о дежурстве тренера
+        duty_trainer = DutyTrainer(trainer_name=trainer_name, duty_date=duty_date)
+        db.session.add(duty_trainer)
+        db.session.commit()
+
+        return redirect(url_for('index'))  # Перенаправление на главную страницу
+    # Получение списка всех тренеров
+    trainers = Trainers.query.all()
+    return render_template('add_in_duty_trainer.html', trainers=trainers)
+
+
 @app.route('/schedule')
 def schedule():
     return render_template('schedule.html')
@@ -153,8 +214,21 @@ def schedule():
 
 @app.route('/group_schedule')
 def group_schedule():
-    group_workouts = GroupSchedule.query.all()
-    return render_template('group_schedule.html', group_workouts=group_workouts)
+    trainer_name = request.args.get('trainer')
+    date = request.args.get('date')
+    # Инициализируем базовый запрос
+    query = GroupSchedule.query
+
+    # Применяем фильтры, если они указаны
+    if trainer_name:
+        query = query.filter(GroupSchedule.trainer_name == trainer_name)
+    if date:
+        query = query.filter(func.DATE(GroupSchedule.date_time) == date)
+
+    # Получаем список тренировок в соответствии с фильтрами
+    group_workouts = query.all()
+    trainers = Trainers.query.all()
+    return render_template('group_schedule.html', group_workouts=group_workouts, trainers=trainers)
 
 
 @app.route('/add_in_group_schedule', methods=['GET', 'POST'])
@@ -169,10 +243,10 @@ def add_in_group_schedule():
         hall = request.form['hall']  # Получаем номер телефона из формы
         # Создание нового клиента
         group_schedule = GroupSchedule(trainer_name=trainer_name,
-                                        activity_type=activity_type,
-                                        activity_name=activity_name,
-                                        date_time=date_time,
-                                        hall=hall)
+                                       activity_type=activity_type,
+                                       activity_name=activity_name,
+                                       date_time=date_time,
+                                       hall=hall)
         db.session.add(group_schedule)
         db.session.commit()
 
@@ -218,7 +292,7 @@ def add_schedule():
         hall = request.form['hall']  # Получаем номер телефона из формы
         phone_number = request.form['phone_number']
         # Создание нового клиента
-        client_schedule = GroupSchedule(client_name=client_name,
+        client_schedule = ClientSchedule(client_name=client_name,
                                          trainer_name=trainer_name,
                                          activity_type=activity_type,
                                          activity_name=activity_name,
@@ -254,6 +328,48 @@ def equipment():
     return render_template('equipment.html', equipment=equipment)
 
 
+@app.route('/add_equipment', methods=['GET', 'POST'])
+def add_equipment():
+    if request.method == 'POST':
+        # Получение данных из формы
+        name = request.form['name']
+        quantity = request.form['quantity']
+        in_working_text = request.form['in_working']
+        repair_text = request.form['repair']
+
+        # Преобразование текстовых значений в булевы
+        in_working = True if in_working_text == 'Да' else False
+        repair = True if repair_text == 'Да' else False
+
+        # Создание новой единицы
+        equipment = Equipment(name=name, quantity=quantity, in_working=in_working, repair=repair)
+        db.session.add(equipment)
+        db.session.commit()
+
+        return redirect(url_for('index'))  # Перенаправление на главную страницу
+    return render_template('add_equipment.html')
+
+
+from flask import request
+
+
+@app.route('/edit_equipment/<int:id>', methods=['GET', 'POST'])
+def edit_equipment(id):
+    equipment = Equipment.query.get_or_404(id)
+
+    if request.method == 'POST':
+        equipment.name = request.form['name']
+        equipment.quantity = request.form['quantity']
+        equipment.in_working = request.form['in_working'] == 'Да'  # Преобразование строки в булевое значение
+        equipment.repair = request.form['repair'] == 'Да'  # Преобразование строки в булевое значение
+
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('edit_equipment.html', equipment=equipment)
+
+
 # Маршрут для отображения абонементов
 @app.route('/abonements')
 def abonements():
@@ -273,6 +389,12 @@ def halls():
 def trainers():
     trainers = Trainers.query.all()  # Извлекаем всех тренеров из базы данных
     return render_template('trainers.html', trainers=trainers)
+
+
+@app.route('/trainers_list')
+def trainers_list():
+    trainers = Trainers.query.all()  # Извлекаем всех тренеров из базы данных
+    return render_template('trainers_list.html', trainers=trainers)
 
 
 @app.route('/search')

@@ -21,14 +21,6 @@
             margin-top: 20px; /* Добавляем отступ сверху */
         }
 
-        .search-field {
-            display: inline-block; /* Делаем поле поиска блочным элементом */
-            margin-bottom: 5px; /* Добавляем отступ между полем поиска и кнопками */
-            background-color: #FFF; /* Белый цвет фона */
-            padding: 5px 10px; /* Отступы */
-            border-radius: 25px; /* Закругленные углы */
-            margin-right: 5px; /* Отступ между заголовком и полем ввода */
-        }
 
         .search-field input[type="text"] {
             background-color: transparent; /* Прозрачное фоновое поле ввода */
@@ -62,8 +54,30 @@
 <body>
 
 <div id="content">
-    <a href="/add_in_client_schedule" onclick="loadPage(this.href); return false;" class="button">Добавить занятие</a>
-    <a href="/client_schedule" onclick="loadPage(this.href); return false;" class="button">Список занятий</a>
+    <table>
+         <h2>Индивидуальное</h2>
+        <tr>
+
+            <td><a href="/add_in_client_schedule" onclick="loadPage(this.href); return false;" class="button">Добавить занятие</a></td>
+        </tr>
+        <tr>
+            <td><a href="/client_schedule" onclick="loadPage(this.href); return false;" class="button">Список занятий</a></td>
+        </tr>
+    </table>
+</div>
+<div id="content">
+    <tr></tr>
+</div>
+<div id="content">
+    <table>
+        <h2>Групповое</h2>
+        <tr>
+            <td><a href="/add_in_group_schedule" onclick="loadPage(this.href); return false;" class="button">Добавить занятие</a></td>
+        </tr>
+        <tr>
+            <td><a href="/group_schedule" onclick="loadPage(this.href); return false;" class="button">Список занятий</a></td>
+        </tr>
+    </table>
 </div>
 
 <!-- Контейнер для загрузки содержимого через AJAX -->

@@ -33,6 +33,7 @@
     <h1>Список клиентов</h1>
     <table>
         <tr>
+            <th>Номер абонемента</th>
             <th>Имя</th>
             <th>Фамилия</th>
             <th>Дата рождения</th>
@@ -43,6 +44,7 @@
         </tr>
         {% for client in clients %}
             <tr>
+                <td>2180-{{ client.id }}</td>
                 <td>{{ client.first_name }}</td>
                 <td>{{ client.last_name }}</td>
                 <td>{{ client.birth_date }}</td>
@@ -53,7 +55,7 @@
             </tr>
         {% endfor %}
     </table>
-    <p><a href="/">На главную</a></p>
+    <p class="button"><a href="/">На главную</a></p>
 </div>
 </body>
 </html>

@@ -82,11 +82,37 @@
         $.ajax({
             url: url,
             success: function (result) {
-                $(".content").html(result);
+                $(".container1").html(result);
             }
         });
         return false; // предотвращает переход по ссылке
     }
+
+    $(document).ready(function () {
+        // Обработчик отправки формы поиска
+        $('form').submit(function (event) {
+            // Отменяем стандартное действие формы
+            event.preventDefault();
+            // Получаем URL формы
+            var formUrl = $(this).attr('action');
+            // Получаем данные формы
+            var formData = $(this).serialize();
+            // Выполняем AJAX-запрос
+            $.ajax({
+                type: 'GET', // Метод запроса (GET или POST)
+                url: formUrl, // URL, куда отправляется запрос
+                data: formData, // Данные формы
+                success: function (response) {
+                    // Вставляем полученный HTML в контейнер с классом .container1
+                    $('.container1').html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Выводим сообщение об ошибке в консоль
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
 </script>
 
 </body>

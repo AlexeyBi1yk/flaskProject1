@@ -148,48 +148,45 @@
     <div id="content"></div>
 
 </div>
-<div class=container1>
+<div class="container1">
     <!-- Дашборд -->
     <div class="dashboard">
         <!-- Блок с количеством клиентов -->
         <div class="dashboard-item">
             <h2>Количество клиентов</h2>
-            <p>{{ clients_count }}</p> <!-- Выводим количество клиентов -->
+            <h3>{{ clients_count }}</h3> <!-- Выводим количество клиентов -->
         </div>
 
         <!-- Добавьте другие блоки дашборда с аналогичной информацией о других аспектах вашего приложения -->
-
-        <div class="dashboard">
-            <div class="dashboard-item">
-                <h2>Abonements</h2>
-                <ul>
-                    {% for abonement in abonements_count %}
-                        <li>{{ abonement.abonement_type }}: {{ abonement.price }}</li>
-                        <li></li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="dashboard-item">
+            <h2>Abonements</h2>
+            <h3>
+                {% for abonement in abonements_count %}
+                    <li>{{ abonement.abonement_type }}: {{ abonement.price }} рублей</li>
+                    <li></li>
+                {% endfor %}
+            </h3>
         </div>
-
-
     </div>
+</div>
 
-    <!-- Подключаем библиотеку jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- Подключаем скрипт -->
-    <script>
-        function loadPage(url) {
-            $.ajax({
-                url: url,
-                success: function (result) {
-                    // Обновляем содержимое #content на странице данными из AJAX-запроса
-                    $(".container1").html(result);
-                }
-            });
-            return false; // предотвращает переход по ссылке
-        }
-    </script>
+<!-- Подключаем библиотеку jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Подключаем скрипт -->
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function (result) {
+                // Обновляем содержимое #content на странице данными из AJAX-запроса
+                $(".container1").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+</script>
 
 
 </body>

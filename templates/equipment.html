@@ -4,13 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список оборудования</title>
+     <style>
+        /* Ваши стили */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(64, 224, 208, 0.3); /* бледно-желтый цвет фона */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            margin-top: 20px;
+        }
+
+        .button a {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button a:hover {
+            background-color: #005A8C;
+        }
+    </style>
 </head>
 <body>
-    <h1>Список оборудования</h1>
-    <ul>
+<div id="content">
+    <h2>Список оборудования <a href="/add_equipment" onclick="loadPage(this.href); return false;" class="button">Добавить</a></h2>
+    <table>
+        <tr>
+            <th>Учетный номер</th>
+            <th>Тип и название</th>
+            <th>Количество</th>
+            <th>В работе</th>
+            <th>В ремонте</th>
+            <th>Действия</th>
+        </tr>
         {% for equipment in equipment %}
-            <li>{{ equipment.name }}</li>
+            <tr>
+                <td>{{ equipment.id }}</td>
+                <td>{{ equipment.name }}</td>
+                <td>{{ equipment.quantity }}</td>
+                <td>{{ "Да" if equipment.in_working else "Нет" }}</td>
+                <td>{{ "Да" if equipment.repair else "Нет" }}</td>
+                <td><a href="{{ url_for('edit_equipment', id=equipment.id) }}" onclick="loadPage(this.href); return false;">Редактировать</a></td>
+
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
+</div>
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function (result) {
+                $(".container1").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дежурства тренеров</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Стили для контейнера 2 */
+        container1 {
+            background-color: rgba(64, 224, 208, 0.2); /* Цвет фона контейнера с небольшой прозрачностью */
+            min-height: 120vh;
+            padding: 10px;
+            opacity: 1;
+            border-radius: 5px;
+            display: flex; /* Используем flexbox для выравнивания по центру */
+            justify-content: center; /* Выравнивание по центру по горизонтали */
+            align-items: flex-start; /* Выравнивание по центру по вертикали */
+
+        }
+
+        /* Стили для заголовка */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Стили для формы */
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        select, input[type="date"], button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        /* Стили для таблицы */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h2>График дежурств тренеров <a href="/add_in_duty_trainer" onclick="loadPage(this.href); return false;" class="button">Добавить запись</a></h2>
+    <!-- Форма для фильтрации -->
+    <form action="{{ url_for('duty_trainer') }}" method="get">
+        <label for="trainer">Фильтр по тренеру:</label>
+        <select name="trainer" id="trainer">
+            <option value="">Все тренеры</option>
+            {% for trainer in trainers %}
+                <option value="{{ trainer.first_name }} {{ trainer.last_name }}">{{ trainer.first_name }} {{ trainer.last_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="date">Фильтр по дате:</label>
+        <input type="date" id="date" name="date">
+        <button type="submit">Применить фильтр</button>
+    </form>
+    <!-- Таблица дежурств -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя тренера</th>
+            <th>Дата дежурства</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for duty_trainer in duty_trainers %}
+            <tr>
+                <td>{{ duty_trainer.id }}</td>
+                <td>{{ duty_trainer.trainer_name }}</td>
+                <td>{{ duty_trainer.duty_date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Контейнер для загрузки содержимого через AJAX -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function loadPage(url) {
+        $.ajax({
+            url: url,
+            success: function (result) {
+                $(".container1").html(result);
+            }
+        });
+        return false; // предотвращает переход по ссылке
+    }
+
+    $(document).ready(function () {
+        // Обработчик отправки формы поиска
+        $('form').submit(function (event) {
+            // Отменяем стандартное действие формы
+            event.preventDefault();
+            // Получаем URL формы
+            var formUrl = $(this).attr('action');
+            // Получаем данные формы
+            var formData = $(this).serialize();
+            // Выполняем AJAX-запрос
+            $.ajax({
+                type: 'GET', // Метод запроса (GET или POST)
+                url: formUrl, // URL, куда отправляется запрос
+                data: formData, // Данные формы
+                success: function (response) {
+                    // Вставляем полученный HTML в контейнер с классом .container1
+                    $('.container1').html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Выводим сообщение об ошибке в консоль
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
