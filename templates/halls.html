@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Абонементы</title>
+    <title>Залы</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,17 +38,17 @@
 </head>
 <body>
     <div id="content">
-        <h2>Абонементы</h2>
+        <h2>Залы</h2>
         <table>
             <tr>
-                <th>Тип абонемента</th>
-                <th>Цена</th>
+                <th>Зал</th>
+                <th>Вместимость</th>
             </tr>
 
-            {% for abonement in abonements %}
+            {% for hall in halls %}
             <tr>
-                <td>{{ abonement.abonement_type }}</td>
-                <td>{{ abonement.price }}</td>
+                <td>{{ hall.name }}</td>
+                <td>{{ hall.capacity }}</td>
             </tr>
             {% endfor %}
         </table>

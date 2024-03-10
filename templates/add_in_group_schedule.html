@@ -19,7 +19,7 @@
 
         table {
             margin: auto; /* Центрирование таблицы */
-            background-color: #fffacd; /* Цвет фона таблицы */
+            background-color: rgba(64, 224, 208, 0.4; /* Цвет фона таблицы */
             border-radius: 5px; /* Закругленные углы таблицы */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень таблицы */
             border-collapse: collapse; /* Убираем отступы между ячейками */
@@ -42,7 +42,7 @@
             width: auto; /* Ширина кнопки по содержимому */
             padding: 10px 20px; /* Отступы в кнопке */
             margin-top: 10px; /* Верхний отступ */
-            background-color: #FFD700; /* Цвет фона кнопки */
+            background-color: #00bfff; /* Цвет фона кнопки */
             color: black; /* Цвет текста кнопки */
             border: none; /* Убираем границу кнопки */
             border-radius: 5px; /* Закругленные углы кнопки */
@@ -51,14 +51,14 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #FFD700; /* Цвет фона кнопки при наведении */
+            background-color: #00bfff; /* Цвет фона кнопки при наведении */
         }
     </style>
 </head>
 <body>
-<h1>Добавить запись в расписание</h1>
 <form action="/add_in_group_schedule" method="post">
     <table>
+    <h2>Добавить запись в расписание</h2>
         <tr>
             <td><label for="trainer_name">Тренер:</label></td>
             <td>

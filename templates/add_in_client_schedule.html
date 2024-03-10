@@ -19,7 +19,7 @@
 
         table {
             margin: auto; /* Центрирование таблицы */
-            background-color: #fffacd; /* Цвет фона таблицы */
+            background-color: rgba(64, 224, 208, 0.4); /* Цвет фона таблицы */
             border-radius: 5px; /* Закругленные углы таблицы */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень таблицы */
             border-collapse: collapse; /* Убираем отступы между ячейками */
@@ -42,7 +42,7 @@
             width: auto; /* Ширина кнопки по содержимому */
             padding: 10px 20px; /* Отступы в кнопке */
             margin-top: 10px; /* Верхний отступ */
-            background-color: #FFD700; /* Цвет фона кнопки */
+            background-color: #00bfff; /* Цвет фона кнопки */
             color: black; /* Цвет текста кнопки */
             border: none; /* Убираем границу кнопки */
             border-radius: 5px; /* Закругленные углы кнопки */
@@ -51,15 +51,16 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #FFD700; /* Цвет фона кнопки при наведении */
+            background-color: #00bfff; /* Цвет фона кнопки при наведении */
         }
     </style>
 </head>
 <body>
-<h1>Добавить запись в расписание клиента</h1>
+
 <form action="/add_in_client_schedule" method="post">
     <table>
         <!-- Добавляем поле выбора клиента -->
+        <h2>Добавить запись в расписание клиента</h2>
         <tr>
             <td><label for="client_name">ФИО клиента:</label></td>
             <td><input type="text" id="client_name" name="client_name"></td>
@@ -76,12 +77,26 @@
         </tr>
         <tr>
             <td><label for="activity_type">Тип активности:</label></td>
-            <td><input type="text" id="activity_type" name="activity_type"></td>
+            <td>
+                <select id="activity_type" name="activity_type">
+                    <option value="Индивидуальная">Индивидуальная</option>
+                </select>
+            </td>
         </tr>
         <tr>
             <td><label for="activity_name">Название активности:</label></td>
-            <td><input type="text" id="activity_name" name="activity_name"></td>
+            <td><select id="activity_name" name="activity_name">
+                <option value="Фитнес">Фитнес</option>
+                <option value="Аэробика">Аэробика</option>
+                <option value="Пауэрлифтинг">Пауэрлифтинг</option>
+                <option value="Йога">Йога</option>
+                <option value="Бодибилдинг">Бодибилдинг</option>
+                <option value="Теннис">Теннис</option>
+               <option value="Плавание">Плавание</option>
+            </select>
+            </td>
         </tr>
+
         <tr>
             <td><label for="date_time">Дата и время:</label></td>
             <td><input type="datetime-local" id="date_time" name="date_time"></td>

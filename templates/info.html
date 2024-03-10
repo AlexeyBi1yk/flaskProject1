@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h2 {
+            font-size: 16px; /* Размер шрифта */
+            line-height: 0.1; /* Уменьшение промежутка между строками */
+        }
+
+        /* Стили для таблицы */
+        table {
+
+            margin: 10px; /* Отступы для выравнивания вверху слева */
+        }
+
+        th, td {
+            border: 1px solid #000; /* Рамка для ячеек */
+            padding: 8px; /* Отступ внутри ячеек */
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td><h2>Юридическое лицо:</h2></td>
+            <td><h2>ООО "Олимп"</h2></td>
+        </tr>
+        <tr>
+            <td><h2>Генеральный директор:</h2></td>
+            <td><h2>Иванов Иван Иванович</h2></td>
+        </tr>
+        <tr>
+            <td><h2>Адрес:</h2></td>
+            <td><h2>ул. Лунная, д. 123, г. Звездный Город</h2></td>
+        </tr>
+        <tr>
+            <td><h2>Телефон:</h2></td>
+            <td><h2>+7 (123) 456-78-90</h2></td>
+        </tr>
+        <tr>
+            <td><h2>Электронная почта:</h2></td>
+            <td><h2>info@olimpgym.ru</h2></td>
+        </tr>
+    </table>
+</div>
+<li><a href="#" onclick="loadPage('/abonements')" class="button"><i> Абонементы</i></a></li>
+<li><a href="#" onclick="loadPage('/halls')" class="button"><i> Залы</i></a></li>
+    <!-- Подключаем библиотеку jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Подключаем скрипт -->
+    <script>
+        function loadPage(url) {
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    // Обновляем содержимое #content на странице данными из AJAX-запроса
+                    $(".container1").html(result);
+                }
+            });
+            return false; // предотвращает переход по ссылке
+        }
+    </script>
+</body>
+</html>

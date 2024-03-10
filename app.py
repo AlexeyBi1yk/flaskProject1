@@ -100,8 +100,6 @@ class Abonements(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     abonement_type = db.Column(db.String(50))
     price = db.Column(db.Float)
-    start_date = db.Column(db.Date)
-    end_date = db.Column(db.Date)
 
 
 class Halls(db.Model):
@@ -377,11 +375,7 @@ def abonements():
     return render_template('abonements.html', abonements=abonements)
 
 
-# Маршрут для отображения залов
-@app.route('/halls')
-def halls():
-    halls = Halls.query.all()  # Извлекаем все залы из базы данных
-    return render_template('halls.html', halls=halls)
+
 
 
 # Маршрут для отображения тренеров
@@ -460,6 +454,17 @@ def edit_client(id):
         return redirect(url_for('index'))  # Перенаправляем на главную страницу
 
     return render_template('edit_client.html', client=client)
+
+
+@app.route('/info')
+def info():
+    return render_template('info.html')
+
+
+@app.route('/halls')
+def halls():
+    halls = Halls.query.all()
+    return render_template('halls.html', halls=halls)
 
 
 if __name__ == '__main__':
